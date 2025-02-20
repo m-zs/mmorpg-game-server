@@ -30,3 +30,22 @@
 *.exe
 *.out
 *.app
+
+# Exclude build/output directories
+out/
+build/
+bin/
+obj/
+
+# JetBrains Rider
+.idea/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.sln.iml
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
