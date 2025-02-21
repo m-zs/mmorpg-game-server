@@ -1,12 +1,22 @@
-﻿# CMakeList.txt: projekt CMake dla elementu mmorpg, dołącz źródło i zdefiniuj
-# tutaj logikę specyficzną dla projektu.
-#
+﻿cmake_minimum_required(VERSION 3.15)
+project(mmorpg)
 
-# Dodaj źródło do pliku wykonywalnego tego projektu.
-add_executable (mmorpg "mmorpg.cpp" "mmorpg.h")
-
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET mmorpg PROPERTY CXX_STANDARD 20)
+if (DEFINED ENV{VCPKG_DEFAULT_TRIPLET} AND NOT DEFINED VCPKG_TARGET_TRIPLET)
+    set(VCPKG_TARGET_TRIPLET "$ENV{VCPKG_DEFAULT_TRIPLET}" CACHE STRING "The vcpkg triplet")
 endif()
 
-# TODO: Dodaj testy i zainstaluj elementy docelowe w razie potrzeby.
+find_package(Boost REQUIRED COMPONENTS system)
+include_directories(${Boost_INCLUDE_DIRS})
+
+add_executable(mmorpg
+    "mmorpg.cpp"
+    "server.cpp"
+    "server.h"
+    "scheduler.h"
+    "scheduler.cpp"
+    "networkManager.h"
+    "networkManager.cpp"
+)
+
+target_link_libraries(mmorpg PRIVATE Boost::system)
+
