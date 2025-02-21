@@ -19,8 +19,15 @@ player = 'x'
 
 class GameApp:
     def __init__(self, window):
+      
         self.player_pos = { 'x': 0, 'y': 2 }
         self.window = window
+
+        self.player_id = 123
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.client.connect(('localhost', 1234))
+        self.client.send(self.player_id.to_bytes(4, byteorder='little'))
+
         self.canvas = tk.Canvas(
             window,
             width=len(GAME_MAP[0]) * CELL_SIZE,
@@ -55,6 +62,7 @@ class GameApp:
           self.player_pos['y'] = new_y
           if (self.player_id): self.canvas.delete(self.player_id)
           self.draw_player()
+          self.send_pos()
 
     def draw_player(self):
       x0 = self.player_pos['x'] * CELL_SIZE
@@ -77,18 +85,11 @@ class GameApp:
 
           self.canvas.create_rectangle(x0, y0, x1, y1, fill=COLORS.get(symbol, "black"), outline="black")
 
+    def send_pos(self):
+      self.client.send(self.player_pos['x'].to_bytes(4, byteorder='little'))
+      self.client.send(self.player_pos['y'].to_bytes(4, byteorder='little'))
+
 window = tk.Tk()
 window.title("Client")
 app = GameApp(window)
 window.mainloop()
-
-# client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# client.connect(('localhost', 1234))
-
-# player_id = 123
-# client.send(player_id.to_bytes(4, byteorder='little'))
-
-# x = 10
-# y = 20
-# client.send(x.to_bytes(4, byteorder='little'))
-# client.send(y.to_bytes(4, byteorder='little'))

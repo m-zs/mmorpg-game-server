@@ -24,7 +24,7 @@ void Game::handleMovement(int playerId, int targetX, int targetY) {
             pos.x = targetX;
             pos.y = targetY;
             broadcastMovement(entity); // Notify other players
-            });
+        });
     }
     else {
         // Kick cheater or log the attempt
