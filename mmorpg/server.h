@@ -17,7 +17,13 @@ public:
     void stop();
 
 private:
-    void handlePlayerMovement(int playerId, int x, int y);
+    void handlePlayerMovement(uint32_t playerId, int32_t x, int32_t y);
+
+    std::vector<char> createMovementPacket(uint32_t playerId, int32_t x, int32_t y);
+
+    std::vector<char> createConfirmationPacket(uint32_t playerId);
+
+    std::vector<char> createRejectionPacket();
 
     io_context m_ioContext;
     NetworkManager m_network;
